@@ -1708,10 +1708,11 @@ static int ft260_uart_receive_chars(struct ft260_device *port, u8 *data, u8 leng
 	return ret;
 }
 
-static int ft260_uart_write(struct tty_struct *tty, const u8 *buf, int cnt)
+static ssize_t ft260_uart_write(struct tty_struct *tty, const u8 *buf, size_t cnt)
 {
 	struct ft260_device *port = tty->driver_data;
-	int len, ret, diff;
+	int	 ret, diff;
+	ssize_t len;
 
 	len = kfifo_in_spinlocked(&port->xmit_fifo, buf, cnt, &port->xmit_fifo_lock);
 	ft260_dbg("count: %d, len: %d", cnt, len);
